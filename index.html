@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Queen Arwa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{
+  min-height:100vh;
+  background: radial-gradient(circle at 30% 120%, #120c3d 0%, #060315 60%, #000 100%);
+  color:#f0e6ff;
+  overflow:hidden;
+  position:relative;
+  touch-action: manipulation;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(200,160,255,0.17) 0%, transparent 12%),
+    radial-gradient(circle at 85% 75%, rgba(255,130,210,0.15) 0%, transparent 14%),
+    radial-gradient(circle at 50% 50%, rgba(120,190,255,0.1) 0%, transparent 10%);
+  animation: drift 38s infinite linear;
+  pointer-events:none;
+}
+@keyframes drift{
+  0%{transform:translate(0,0);}
+  50%{transform:translate(30px,-30px);}
+  100%{transform:translate(0,0);}
+}
+#content{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  padding-left:95px;
+}
+.page{display:none;width:100%;max-width:500px;padding:20px;}
+.page.active{display:block;animation:fadeIn 0.8s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(30px) scale(0.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+.card{
+  background:rgba(25,20,55,0.55);
+  backdrop-filter:blur(25px);
+  border-radius:35px;
+  padding:45px 38px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 25px 60px rgba(0,0,0,0.75);
+  animation:float 14s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+h1{
+  font-size:2.7rem;
+  font-weight:300;
+  background:linear-gradient(90deg,#e3c3ff,#fface9,#b6e8ff,#ffb0d5);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:20px;
+  animation:hue 8s linear infinite;
+}
+@keyframes hue{from{filter:hue-rotate(0deg);}to{filter:hue-rotate(360deg);}}
+.card button{
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  color:white;
+  padding:16px 34px;
+  border-radius:50px;
+  margin:10px;
+  font-size:1.15rem;
+  cursor:pointer;
+  transition:0.35s ease;
+  min-height:56px;
+}
+.card button:hover,.card button:active{
+  background:rgba(255,255,255,0.28);
+  transform:translateY(-6px);
+}
+#msg{
+  margin-top:30px;
+  min-height:75px;
+  font-size:1.5rem;
+  color:#f3ddff;
+  text-shadow:0 0 20px rgba(200,160,255,0.7);
+  padding:0 10px;
+  line-height:1.5;
+}
+.sidebar{
+  position:fixed;
+  left:0;top:0;
+  width:85px;
+  height:100vh;
+  background:rgba(10,10,30,0.75);
+  backdrop-filter:blur(20px);
+  border-right:1px solid rgba(255,255,255,0.08);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:40px;
+  gap:28px;
+  z-index:100;
+}
+.sidebar button{
+  width:62px;
+  height:62px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  color:white;
+  font-size:1.8rem;
+  cursor:pointer;
+  transition:0.4s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.sidebar button:hover,.sidebar button:active{
+  background:rgba(255,255,255,0.25);
+  transform:scale(1.15);
+}
+.sidebar button.active{
+  background:linear-gradient(135deg,#9b4bf7,#9e9e9e);
+  box-shadow:0 0 25px rgba(170,80,250,0.65);
+  transform:scale(1.25);
+}
+.mail-btn{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2000;
+}
+.mail-btn button{
+  background:linear-gradient(135deg,#ff5f7a,#ff8b9d);
+  color:white;
+  border:none;
+  padding:18px 40px;
+  border-radius:50px;
+  font-size:1.25rem;
+  box-shadow:0 10px 35px rgba(255,100,140,0.45);
+  cursor:pointer;
+  min-height:62px;
+}
+@media (max-width: 480px){
+  .sidebar{width:75px;}
+  #content{padding-left:85px;}
+  .sidebar button{width:56px;height:56px;font-size:1.6rem;}
+  h1{font-size:2.3rem;}
+  .card{padding:35px 28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <button class="active" onclick="openPage('home')" data-page="home">🏠</button>
+  <button onclick="openPage('letters')" data-page="letters">📝</button>
+  <button onclick="openPage('gallery')" data-page="gallery">📸</button>
+  <button onclick="openPage('promise')" data-page="promise">🤞</button>
+  <button onclick="openPage('secret')" data-page="secret">👀</button>
+  <button onclick="openPage('videos')" data-page="videos">🎥</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="content">
+
+  <!-- HOME -->
+  <div class="page active" id="home">
+    <div class="card">
+       <h1>You're home now, my heart is open for you <span class="heart">❤️</span></h1>
+      <p class="lead">This little corner of the web is just for you — come in, breathe, smile.</p>
+
+      <div>
+        <button onclick="window.location.href='love-note.html'">Love Note</button>
+        <button onclick="window.location.href='hug.html'">Big Hug Hug</button>
+        <button onclick="window.location.href='song.html'">Our Song Music</button>
+      </div>
+      <div id="msg"></div>
+    </div>
+  </div>
+
+  <!-- LETTERS -->
+  <div class="page" id="letters">
+    <div class="card">
+      <h1>From My Soul</h1>
+      <p style="font-size:1.3rem;line-height:2.2;">
+        In every lifetime,<br>I will find you.<br><br>
+        You are my peace,<br>my home,<br>my forever.<br><br>
+        I love you endlessly.
+      </p>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="page" id="gallery">
+    <div class="card">
+      <h1>Our Moments</h1>
+      <div style="max-height:65vh;overflow-y:auto;padding:10px 5px;margin:20px 0;border-radius:25px;scrollbar-width:thin;scrollbar-color:rgba(138,138,138,0.4) transparent;">
+        <img src="kk2.png" loading="lazy" style="width:100%;height:auto;border-radius:22px;box-shadow:0 12px 35px #000;margin:15px 0;display:block;">
+        <img src="unnamed (3).jpg" loading="lazy" style="width:100%;height:auto;border-radius:22px;box-shadow:0 12px 35px #000;margin:15px 0;display:block;">
+        <img src="unnamed (4).jpg" loading="lazy" style="width:100%;height:auto;border-radius:22px;box-shadow:0 12px 35px #000;margin:15px 0;display:block;">
+        <img src="unnamed (6).jpg" loading="lazy" style="width:100%;height:auto;border-radius:22px;box-shadow:0 12px 35px #000;margin:15px 0;display:block;">
+        <img src="unnamed (1).jpg" loading="lazy" style="width:100%;height:auto;border-radius:22px;box-shadow:0 12px 35px #000;margin:15px 0;display:block;">
+        <img src="unnamed (5).jpg" loading="lazy" style="width:100%;height:auto;border-radius:22px;box-shadow:0 12px 35px #000;margin:15px 0;display:block;">
+      </div>
+      <p style="margin-top:15px;color:#5f5d5f;font-size:1.1rem;">Scroll karo meri jaan... har photo mein tum hi tum ho</p>
+    </div>
+  </div>
+
+  <!-- PROMISE -->
+  <div class="page" id="promise">
+    <div class="card">
+      <h1>My Promise</h1>
+      <p style="font-size:1.35rem;line-height:2.3;">
+        Distance means nothing<br>when someone means everything.<br><br>
+        I’m not going anywhere.<br>You're mine forever.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECRET -->
+  <div class="page" id="secret">
+    <div class="card">
+      <h1>Only Us</h1>
+      <p style="font-size:1.35rem;line-height:2.3;">
+        You're not just my love —<br>you're my safest place,<br>
+        my calm in chaos,<br>my entire universe.
+      </p>
+    </div>
+  </div>
+
+  <!-- VIDEOS PAGE -->
+  <div class="page" id="videos">
+    <div class="card">
+      <h1>Our Video Memories</h1>
+      <p style="font-size:1.3rem;line-height:2;margin:30px 0;color:#ffd4ed;">
+        Ye saare moments sirf hamare hain...
+      </p>
+      <button onclick="window.location.href='videos.html'" style="padding:20px 50px;font-size:1.5rem;background:#504a4c;box-shadow:0 15px 40px rgba(255,64,129,0.5);">
+        Open Our Videos
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============ PAGE SWITCHING (Fixed & Clean) ============
+function openPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  document.querySelectorAll('.sidebar button').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.page === id) btn.classList.add('active');
+  });
+}
+
+// Home pe welcome message (optional - tum chahte ho to rakh sakte ho)
+window.onload = function() {
+  const messages = [
+    "Welcome home meri jaan ❤️",
+    "Aaj bhi tum sabse khubsurat ho",
+    "Bas tumhara intezaar tha",
+    "I love you more than yesterday"
+  ];
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  document.getElementById('msg').innerHTML = msg;
+};
+</script>
+
+</body>
+</html>

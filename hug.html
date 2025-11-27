@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Big Hug for Arwa ♡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body{margin:0;background:#0d0619;color:#fff;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;position:relative;}
+  .hearts{position:absolute;inset:0;pointer-events:none;}
+  .heart{position:absolute;font-size:2rem;animation:up 8s linear infinite;opacity:0;}
+  @keyframes up{0%{transform:translateY(100vh);opacity:0;}20%{opacity:1;}100%{transform:translateY(-100px);opacity:0;}}
+  h1{font-size:3.5rem;margin:20px;background:linear-gradient(#ff80ab,#ff4081);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  p{font-size:1.6rem;}
+  .back{position:fixed;bottom:40px;background:#ff4081;padding:16px 50px;border-radius:50px;font-size:1.3rem;}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+<h1>Biggest Hug Ever ♡</h1>
+<p>Agar main wahan hota to abhi<br>tujhe itna zor se hug karta<br>ki saari thakan nikal jaati...</p>
+<button class="back" onclick="history.back()">← Back</button>
+
+<script>
+setInterval(() => {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.innerText = '♡';
+  h.style.left = Math.random()*100 + 'vw';
+  h.style.animationDuration = 4 + Math.random()*4 + 's';
+  document.getElementById('hearts').appendChild(h);
+  setTimeout(() => h.remove(), 10000);
+}, 400);
+</script>
+</body>
+</html>

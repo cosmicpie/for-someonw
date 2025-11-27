@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Songs ♪</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body{margin:0;background:#0a001a;color:#fff;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;font-family:'Segoe UI',sans-serif;}
+  .player{background:rgba(20,10,50,0.7);backdrop-filter:blur(25px);width:90%;max-width:420px;border-radius:35px;padding:35px 25px;box-shadow:0 30px 80px rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.12);}
+  .cover{width:220px;height:220px;margin:0 auto 25px;background:var(--img) center/cover;border-radius:50%;box-shadow:0 0 90px rgba(255,100,200,0.7);animation:spin 20s linear infinite;}
+  @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  h1{font-size:2.4rem;background:linear-gradient(90deg,#ff9ece,#c684ff,#84a1ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+  .title{font-size:1.4rem;margin-bottom:8px;opacity:0.9;}
+  .artist{color:#ff9ece;font-size:1.1rem;margin-bottom:25px;}
+
+  .controls{margin:30px 0;display:flex;justify-content:center;gap:25px;}
+  .ctrl-btn{background:rgba(255,255,255,0.15);border:none;color:white;width:60px;height:60px;border-radius:50%;font-size:2rem;cursor:pointer;transition:0.3s;}
+  .ctrl-btn:hover{background:rgba(255,255,255,0.3);transform:scale(1.1);}
+  #playPause{font-size:2.4rem;width:75px;height:75px;}
+
+  .playlist{margin-top:30px;max-height:220px;overflow-y:auto;padding-right:10px;}
+  .song-item{padding:14px 18px;background:rgba(255,255,255,0.08);margin:8px 0;border-radius:15px;cursor:pointer;transition:0.3s;display:flex;align-items:center;gap:15px;}
+  .song-item:hover{background:rgba(255,100,200,0.25);}
+  .song-item.active{background:linear-gradient(135deg,#ff5f9e,#d93b7e);font-weight:bold;}
+  .song-cover-small{width:45px;height:45px;border-radius:10px;background:var(--img) center/cover;}
+
+  .back{position:fixed;bottom:30px;background:#ff4081;padding:15px 50px;border-radius:50px;font-size:1.3rem;cursor:pointer;}
+
+  /* Scrollbar */
+  .playlist::-webkit-scrollbar{width:6px;}
+  .playlist::-webkit-scrollbar-thumb{background:rgba(255,100,200,0.6);border-radius:10px;}
+</style>
+</head>
+<body>
+
+<div class="player">
+  <div class="cover" id="cover"></div>
+  <h1>Our Forever Songs ♪</h1>
+  <div class="title" id="title">Loading...</div>
+  <div class="artist" id="artist"></div>
+
+  <div class="controls">
+    <button class="ctrl-btn" id="prev">⏮</button>
+    <button class="ctrl-btn" id="playPause">▶</button>
+    <button class="ctrl-btn" id="next">⏭</button>
+  </div>
+
+  <div class="playlist" id="playlist"></div>
+</div>
+
+<button class="back" onclick="history.back()">← Back to Home</button>
+
+<audio id="audio" preload="auto"></audio>
+
+<script>
+// Apne pasand ke songs yaha add karo (jitne marzi!)
+const songs = [
+  {title:"my feeling ",          artist:"",   url:"Shiddat (Title Track)-(SambalpuriStar.In).mp3", cover:"kk.png"},
+  {title:"perfact",                 artist:"edsheern", url:"Perfect-(Mr-Jat.in).mp3", cover:"pc1.png"},
+  // Aur kitne bhi add kar sakte ho bas yehi format mein
+];
+
+let currentSong = 0;
+const audio = document.getElementById('audio');
+const cover = document.getElementById('cover');
+const title = document.getElementById('title');
+const artist = document.getElementById('artist');
+const playPause = document.getElementById('playPause');
+const playlist = document.getElementById('playlist');
+
+function loadSong(index) {
+  const song = songs[index];
+  title.textContent = song.title;
+  artist.textContent = song.artist;
+  audio.src = song.url;
+  cover.style.backgroundImage = `url(${song.cover})`;
+  document.documentElement.style.setProperty('--img', `url(${song.cover})`);
+  
+  // Update active in playlist
+  document.querySelectorAll('.song-item').forEach((item, i) => {
+    item.classList.toggle('active', i === index);
+  });
+}
+
+function playPauseToggle() {
+  if (audio.paused) {
+    audio.play();
+    playPause.textContent = "❚❚";
+  } else {
+    audio.pause();
+    playPause.textContent = "▶";
+  }
+}
+
+// Create playlist items
+songs.forEach((song, i) => {
+  const div = document.createElement('div');
+  div.className = 'song-item';
+  div.innerHTML = `
+    <div class="song-cover-small" style="background-image:url(${song.cover})"></div>
+    <div>
+      <div style="font-weight:600;">${song.title}</div>
+      <div style="font-size:0.9rem;opacity:0.8;">${song.artist}</div>
+    </div>
+  `;
+  div.onclick = () => {
+    currentSong = i;
+    loadSong(i);
+    audio.play();
+    playPause.textContent = "❚❚";
+  };
+  playlist.appendChild(div);
+});
+
+// Controls
+document.getElementById('playPause').onclick = playPauseToggle;
+document.getElementById('next').onclick = () => {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+  audio.play();
+  playPause.textContent = "❚❚";
+};
+document.getElementById('prev').onclick = () => {
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  loadSong(currentSong);
+  audio.play();
+  playPause.textContent = "❚❚";
+};
+
+// Auto next
+audio.onended = () => {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+  audio.play();
+};
+
+// Start
+loadSong(0);
+</script>
+</body>
+</html>

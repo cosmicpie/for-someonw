@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Note for My Queen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body{margin:0;background:#0a0418;color:#fff;overflow:hidden;height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;}
+  body::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(180,80,255,0.2),transparent 70%);animation:pulse 8s infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+  .note{background:rgba(20,10,50,0.7);backdrop-filter:blur(20px);border-radius:30px;padding:50px 30px;max-width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.15);}
+  h1{font-size:3rem;background:linear-gradient(90deg,#ff9ece,#c684ff,#84a1ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:30px;}
+  p{font-size:1.4rem;line-height:2;opacity:0;animation:fade 2s forwards 0.5s;}
+  @keyframes fade{to{opacity:1;transform:translateY(-20px);}}
+  .back{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#ff5f9e;padding:15px 40px;border-radius:50px;font-size:1.2rem;}
+</style>
+</head>
+<body>
+<div class="note">
+  <h1>My Queen Arwa</h1>
+  <p>
+    Har saans mein tera naam hai,<br>
+    Har khwab mein tera chehra,<br><br>
+    Tu nahi samne phir bhi lagta hai<br>
+    tu mere paas hai...<br><br>
+    I love you more than words can ever say.<br>
+    Forever yours.
+  </p>
+</div>
+<button class="back" onclick="history.back()">← Back</button>
+</body>
+</html>
